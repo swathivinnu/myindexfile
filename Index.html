@@ -1,0 +1,121 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Learn Alphabets A to Z</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            text-align: center;
+            background: #eaf6ff;
+        }
+
+        h1 {
+            color: #003366;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 15px;
+            max-width: 700px;
+            margin: 30px auto;
+        }
+
+        button {
+            padding: 20px;
+            font-size: 25px;
+            font-weight: bold;
+            background: orange;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: lightgreen;
+        }
+
+        .playall {
+            background: green;
+            color: white;
+            padding: 15px 30px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Welcome to Alphabet Learning</h1>
+    <h2>Click Any Alphabet to Hear Its Sound</h2>
+
+    <button class="playall" onclick="playAll()">
+        Play All A to Z 🔊
+    </button>
+
+    <div class="container" id="alphabets"></div>
+
+    <script>
+
+        let letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+        let container = document.getElementById("alphabets");
+
+        for (let letter of letters) {
+
+            let button = document.createElement("button");
+
+            button.innerText = letter;
+
+            button.onclick = function() {
+                speak(letter);
+            };
+
+            container.appendChild(button);
+        }
+
+        function speak(letter) {
+
+            speechSynthesis.cancel();
+
+            let speech = new SpeechSynthesisUtterance(letter);
+
+            speech.lang = "en-US";
+            speech.rate = 0.8;
+
+            speechSynthesis.speak(speech);
+        }
+
+        function playAll() {
+
+            speechSynthesis.cancel();
+
+            let index = 0;
+
+            function nextLetter() {
+
+                if (index >= letters.length) return;
+
+                let speech = new SpeechSynthesisUtterance(
+                    letters[index]
+                );
+
+                speech.lang = "en-US";
+                speech.rate = 0.8;
+
+                speech.onend = function() {
+                    index++;
+                    nextLetter();
+                };
+
+                speechSynthesis.speak(speech);
+            }
+
+            nextLetter();
+        }
+
+    </script>
+
+</body>
+</html>
